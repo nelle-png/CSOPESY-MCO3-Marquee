@@ -3,16 +3,18 @@
 
 void show_help() {
     std::cout << "help - displays the commands and its description\n";
-    std::cout << "start_marquee - starts the marquee \"animation\"\n";
-    std::cout << "stop_marquee - stops the marquee \"animation\"\n";
+    // std::cout << "start_marquee - starts the marquee \"animation\"\n";
+    // std::cout << "stop_marquee - stops the marquee \"animation\"\n";
     std::cout << "set_text - accepts a text input and displays it as a marquee\n";
-    std::cout << "set_speed - sets the marquee animation refresh in milliseconds\n";
+    // std::cout << "set_speed - sets the marquee animation refresh in milliseconds\n";
     std::cout << "exit - terminates the console\n";
 }
 
 int main() {
-    std::cout << "Group 7\n";
-    std::cout << "Version 9-18-2026\n";
+    std::cout << "\nWelcome to CSOPESY!\n\n";
+    std::cout << "Group Developer:\n";
+    std::cout << "Espineli, Nyan\nGuarin, Raine\nMontano, Rovin\nTolentino, Winelle\n\n";
+    std::cout << "Version date: 2026-09-21\n\n";
     
     std::string cmd;
     std::string saved_text;
@@ -39,7 +41,7 @@ int main() {
                 std::cout << "Text saved for marquee: " << saved_text << "\n";
             }
         } 
-        else if (cmd == "set_speed") {
+        /* else if (cmd == "set_speed") {
             std::string speed_str;
             std::getline(std::cin, speed_str);
             if (!speed_str.empty() && speed_str[0] == ' ')
@@ -55,7 +57,7 @@ int main() {
             } catch (...) {
                 std::cout << "error: invalid speed value\n";
             }
-        }
+        } */
         else if (cmd == "exit") {
             not_exit = false;
             std::cout << "Terminating console...\n";
