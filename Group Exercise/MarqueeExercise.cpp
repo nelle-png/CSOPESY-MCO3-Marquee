@@ -26,7 +26,7 @@ void animation(std::string saved_text, int speed_ms, std::atomic<bool>& marquee_
 }
 
 int main() {
-    std::cout << "\033[2J" << "\033[4r" << "\033[1;H" << std::string(40, '=') << "\033[3;1H" << std::string(40, '=') << "\033[4;1H";
+    std::cout << "\033[2J" << "\033[4r" << "\033[1;1H" << std::string(40, '=') << "\033[3;1H" << std::string(40, '=') << "\033[4;1H";
     std::cout << "\nWelcome to CSOPESY!\n\n";
     std::cout << "Group Developer:\n";
     std::cout << "Espineli, Nyan\nGuarin, Raine\nMontano, Rovin\nTolentino, Winelle\n\n";
@@ -61,6 +61,17 @@ int main() {
                 }
             }
         }
+        else if (cmd == "stop_marquee") {
+            if (marquee_running.load()) {
+                marquee_running.store(false);
+                if (marquee_thread.joinable()) {
+                    marquee_thread.join();
+                }
+                std::cout <<  "\0337" << "\033[2;1H" << "\033[K" << "\0338" << std::flush;   // clear the marquee line
+            } else {
+                std::cout << "error: Marquee is not running.\n";
+            }
+        }
         else if (cmd == "set_text") {
             std::getline(std::cin, saved_text);  // read rest of line
             if (!saved_text.empty() && saved_text[0] == ' ')
@@ -71,7 +82,7 @@ int main() {
                 std::cout << "Text saved for marquee: " << saved_text << "\n";
             }
         } 
-        /* else if (cmd == "set_speed") {
+        else if (cmd == "set_speed") {
             std::string speed_str;
             std::getline(std::cin, speed_str);
             if (!speed_str.empty() && speed_str[0] == ' ')
@@ -87,7 +98,7 @@ int main() {
             } catch (...) {
                 std::cout << "error: invalid speed value\n";
             }
-        } */
+        } 
         else if (cmd == "exit") {
             not_exit = false;
             std::cout << "Terminating console...\n";
@@ -96,6 +107,12 @@ int main() {
             std::cout << "error: command not found\n";
         }
     }
-    std::cout << "\033[r";
+    if (marquee_running.load()) {
+        marquee_running.store(false);
+        if (marquee_thread.joinable()) {
+            marquee_thread.join();
+        }
+    }
+    std::cout <<  "\0337" << "\033[2;1H" << "\033[K" << "\033[r" << "\0338" << std::flush;   // clear the marquee line
     return 0;
 }
