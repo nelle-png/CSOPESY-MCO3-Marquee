@@ -105,6 +105,8 @@ int main() {
                 int val = std::stoi(speed_str);
                 if (val <= 0) {
                     print("error: speed must be greater than 0\n");
+                } else if (val <= 50) {
+                    print("error: speed must be greater than 50 for optimal performance\n");
                 } else {
                     speed_ms = val;
                     print("Speed set to: " + std::to_string(speed_ms) + " ms\n");
