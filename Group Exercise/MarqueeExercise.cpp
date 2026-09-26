@@ -8,7 +8,7 @@
 #include <conio.h>  // for _kbhit() and _getch() on Windows
 
 std::mutex marquee_mutex;
-
+std::mutex print_mutex;
 
 void print_marquee(const std::string& text) {
     std::lock_guard<std::mutex> lock(marquee_mutex);
@@ -58,10 +58,16 @@ void show_help() {
     print("exit - terminates the console\n");
 }
 
-void animation(std::string saved_text, std::atomic<int>& speed_ms, std::atomic<bool>& marquee_running) {
+void animation(std::string& saved_text, std::atomic<int>& speed_ms, std::atomic<bool>& marquee_running) {
     int offset = 0;
-    std::string text = saved_text + " ";
+    
+    std::string text;
     while (marquee_running.load()) {
+        {
+            std::lock_guard<std::mutex> lock(print_mutex);
+            text = saved_text + " ";
+        }
+        offset = offset % text.length();
         std::string frame = text.substr(offset) + text.substr(0, offset);
         frame = frame.substr(0, 40);  // limit to 40 characters 
         offset = (offset + 1) % text.length();
@@ -120,7 +126,7 @@ int main() {
             } else {
                 if (!marquee_running.load()) {
                     marquee_running.store(true);
-                    marquee_thread = std::thread(animation, saved_text, std::ref(speed_ms), std::ref(marquee_running));
+                    marquee_thread = std::thread(animation, std::ref(saved_text), std::ref(speed_ms), std::ref(marquee_running));
                 } else {
                     print("error: Marquee is already running.\n");
                 }
@@ -141,8 +147,11 @@ int main() {
             
             if (args.empty()) {
                 print("error: no text provided\n");
-            } else {            
-                saved_text = args;
+            } else {        
+                {
+                    std::lock_guard<std::mutex> lock(print_mutex);
+                    saved_text = args;
+            }    
                 print("Text saved for marquee: " + saved_text + "\n");
             }
         } 
