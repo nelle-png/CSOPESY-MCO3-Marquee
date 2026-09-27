@@ -41,7 +41,7 @@ CSOPESY-MCO3-Marquee/
 ### Module Descriptions
 * [**`ConsoleUI.hpp`**](Group%20Exercise/ConsoleUI.hpp): Enables Windows VT100 virtual terminal sequences (`ENABLE_VIRTUAL_TERMINAL_PROCESSING`), sets 1ms OS timer resolution, manages fixed marquee lines (rows 1–3) and scrolling regions (`\033[4r`), and provides anti-flicker cursor hiding (`\033[?25l` / `\033[?25h`).
 * [**`KeyboardInput.hpp`**](Group%20Exercise/KeyboardInput.hpp): Non-blocking keyboard polling using `_kbhit()` and `_getch()`, handling backspaces (`\b \b`), Enter (`\r`), and draining buffered keystrokes with near 0% idle CPU overhead.
-* [**`Marquee.hpp`**](Group%20Exercise/Marquee.hpp): Encapsulates background worker thread (`std::thread`), condition-variable responsive sleep (`cv_anim.wait_for`) for true 0% CPU sleep with 0ms interrupt latency, and circular text rotation padded to 40 columns.
+* [**`Marquee.hpp`**](Group%20Exercise/Marquee.hpp): Encapsulates background worker thread (`std::thread`), condition-variable responsive sleep (`cv_anim.wait_for`) for true 0% CPU sleep with 0ms interrupt latency, and circular text rotation padded to 70 columns.
 * [**`CommandInterpreter.hpp`**](Group%20Exercise/CommandInterpreter.hpp): Parses and executes CLI commands (`help`, `start_marquee`, `stop_marquee`, `set_text`, `set_speed`, `exit`) with full parameter validation.
 * [**`MarqueeExercise.cpp`**](Group%20Exercise/MarqueeExercise.cpp): Coordinates system startup, runs the main event loop, and performs clean termination.
 

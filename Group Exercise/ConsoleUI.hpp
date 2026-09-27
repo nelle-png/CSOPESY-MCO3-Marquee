@@ -82,7 +82,7 @@ public:
 
     // Initializes the console: clears screen, draws top/bottom borders (rows 1 & 3),
     // and locks scrolling to row 4 downwards.
-    static void setup_screen(int box_width = 40, int scroll_start_row = 4) {
+    static void setup_screen(int box_width = 70, int scroll_start_row = 4) {
         std::lock_guard<std::mutex> lock(console_mutex);
         std::string border(box_width, '=');
         // \033[2J           = clear entire screen

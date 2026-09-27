@@ -14,6 +14,7 @@
  */
 class Marquee {
 private:
+    int box_width = 70;
     std::string saved_text;
     std::atomic<int> speed_ms{100};              // Default refresh speed in ms
     std::atomic<bool> marquee_running{false};     // Thread running flag
@@ -31,9 +32,9 @@ private:
         while (marquee_running.load()) {
             {
                 std::lock_guard<std::mutex> lock(text_mutex);
-                if (saved_text.length() < 40) {
-                    // Pad with spaces to allow short strings to travel across the full 40-column window
-                    text = saved_text + std::string(40 - saved_text.length() + 3, ' ');
+                if (static_cast<int>(saved_text.length()) < box_width) {
+                    // Pad with spaces to allow short strings to travel across the full width
+                    text = saved_text + std::string(box_width - saved_text.length() + 3, ' ');
                 } else {
                     text = saved_text + "    ";
                 }
@@ -45,7 +46,7 @@ private:
 
             offset = offset % text.length();
             std::string frame = text.substr(offset) + text.substr(0, offset);
-            frame = frame.substr(0, 40); // limit to 40 columns
+            frame = frame.substr(0, box_width); // limit to box_width columns
             offset = (offset + 1) % text.length();
 
             ConsoleUI::print_marquee(frame);
@@ -64,7 +65,7 @@ private:
     }
 
 public:
-    Marquee() = default;
+    explicit Marquee(int width = 70) : box_width(width) {}
 
     ~Marquee() {
         stop();

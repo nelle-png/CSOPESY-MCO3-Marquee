@@ -21,8 +21,8 @@ int main() {
     // 1. Initialize Windows Virtual Terminal Processing and 1ms timer resolution
     ConsoleUI::enable_virtual_terminal();
 
-    // 2. Setup screen: 40-character wide border, scrolling region starting at row 4
-    ConsoleUI::setup_screen(40, 4);
+    // 2. Setup screen: 70-character wide border, scrolling region starting at row 4
+    ConsoleUI::setup_screen(70, 4);
 
     ConsoleUI::print("\nWelcome to CSOPESY!\n\n");
     ConsoleUI::print("Group Developer:\n");
@@ -30,7 +30,7 @@ int main() {
     ConsoleUI::print("Version date: 2026-09-21\n\n");
 
     // 3. Instantiate core components
-    Marquee marquee;
+    Marquee marquee(70);
     bool running = true;
     CommandInterpreter interpreter(marquee, running);
 
