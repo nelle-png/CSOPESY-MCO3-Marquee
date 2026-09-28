@@ -15,6 +15,7 @@
 class Marquee {
 private:
     int box_width = 70;
+    int offset = 0;
     std::string saved_text;
     std::atomic<int> speed_ms{100};              // Default refresh speed in ms
     std::atomic<bool> marquee_running{false};     // Thread running flag
@@ -26,7 +27,6 @@ private:
 
     // Worker thread loop for animating the marquee
     void animation_loop() {
-        int offset = 0;
         std::string text;
 
         while (marquee_running.load()) {
@@ -124,7 +124,6 @@ public:
             marquee_thread.join();
         }
 
-        ConsoleUI::clear_marquee_line();
         return true;
     }
 };

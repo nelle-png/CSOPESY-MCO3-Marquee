@@ -74,12 +74,6 @@ public:
         std::cout << "\033[?25l\0337\033[2;1H" << text << "\033[K\0338\033[?25h" << std::flush;
     }
 
-    // Clears the marquee row (row 2)
-    static void clear_marquee_line() {
-        std::lock_guard<std::mutex> lock(console_mutex);
-        std::cout << "\033[?25l\0337\033[2;1H\033[K\0338\033[?25h" << std::flush;
-    }
-
     // Initializes the console: clears screen, draws top/bottom borders (rows 1 & 3),
     // and locks scrolling to row 4 downwards.
     static void setup_screen(int box_width = 70, int scroll_start_row = 4) {
